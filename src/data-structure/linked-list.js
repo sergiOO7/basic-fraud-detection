@@ -42,7 +42,7 @@ export class TransactionService {
         if(results[0]){
             let travelTime = this.graph.travelTime(previousTransaction.site, transaction.site);
             return `
-<=== Fraud detected! ${previousTransaction.site} -> ${transaction.site} Normally takes ${travelTime} Hours and current is: ${results[1]}  ====>\n
+<=== Fraud detected! ${previousTransaction.site} -> ${transaction.site} Normally takes ${travelTime} Hours and current is: ${results[1].toFixed(1)} Hours  ====>\n
 \tPrevious Transaction: ${JSON.stringify(previousTransaction)}\n
 \tCurrent Transaction: ${JSON.stringify(transaction)}\n
 <===================================== Fraud detected! Transaction not added. =====================================>`;
@@ -66,10 +66,10 @@ ${JSON.stringify(transaction)}`;
     }
     fraudDetection(previousTransaction, currentTransaction){
         if(!previousTransaction){
-            return false;
+            return [false, 0];
         }
         if(previousTransaction.transactionDate !== currentTransaction.transactionDate){
-            return false;
+            return [false, 0];
         }
         
         let travelTime = this.graph.travelTime(previousTransaction.site, currentTransaction.site);
@@ -84,18 +84,18 @@ class PriorityQueue {
         this.queue = [];
     }
 
-    enqueue(element, priority) {
-        this.queue.push({ element, priority });
+    enqueue(element, distance) {
+        this.queue.push({ element, distance });
         this.sortQueue();
     }
 
     dequeue() {
-        const { element, priority } = this.queue.shift();
-        return { node: element, priority: priority };
+        const { element, distance } = this.queue.shift();
+        return { node: element, distance: distance };
     }
 
     sortQueue() {
-        this.queue.sort((a, b) => a.priority - b.priority);
+        this.queue.sort((a, b) => a.distance - b.distance);
     }
 
     isEmpty() {
@@ -130,11 +130,11 @@ export class Graph {
         }
         
         distances[start] = 0; // Distance from start to start is 0
-        priorityQueue.enqueue(start, 0); // Enqueue the start node with priority 0
+        priorityQueue.enqueue(start, 0); // Enqueue the start node with distance 0
         
         while (!priorityQueue.isEmpty()) {
-            const { node: current, priority: currentDistance } = priorityQueue.dequeue(); // Extract the node with the smallest distance
-                
+            // Destructure the queue object and extract the node with the smallest distance
+            const { node: current, distance: currentDistance } = priorityQueue.dequeue(); 
             // Visit each neighbor of the current node
             for (const edge of this.adjacencyList[current]) {
                 const neighbor = edge.node;
