@@ -1,7 +1,7 @@
 {
-  "name": "geonology-tree",
+  "name": "basic-fraud-detection",
   "version": "1.0.0",
-  "description": "Demostrate the use of linked list data structure to represent geonology trees",
+  "description": "Desmostrate the use of linked list and a modification of Kruskal's algorithm to detect fraud based on travel time",
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
