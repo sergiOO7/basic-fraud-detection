@@ -4,7 +4,6 @@
   "description": "Desmostrate the use of linked list and a modification of Kruskal's algorithm to detect fraud based on travel time",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node main.js",
     "build": "npm install"
   },
